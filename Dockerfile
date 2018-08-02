@@ -28,15 +28,23 @@ RUN apt-get -y update && \
 
 # Add android tools and platform tools to PATH
 ENV ANDROID_HOME /sdk
-ENV PATH $PATH:$ANDROID_HOME/tools/bin
-ENV PATH $PATH:$ANDROID_HOME/platform-tools
-ENV PATH $PATH:$ANDROID_HOME/emulator
+ENV ANDOIRD_BIN $ANDROID_HOME/tools/bin 
+ENV ANDROID_TOOLS $ANDROID_HOME/platform-tools
+ENV ANDROID_EMU $ANDROID_HOME/emulator
+
+ENV PATH $PATH:$ANDOIRD_BIN
+ENV PATH $PATH:$ANDROID_TOOLS
+ENV PATH $PATH:$ANDROID_EMU
 
 # Export JAVA_HOME variable
 ENV JAVA_HOME /usr/lib/jvm/default-java
 
+RUN echo $PATH
+RUN echo $ANDROID_HOME
+RUN echo $JAVA_HOME
+
 # Install latest android tools and system images
-RUN sdkmanager \
+RUN ${ANDOIRD_BIN}/sdkmanager \
         "tools" \
 		"platform-tools" \
 		"emulator" \
