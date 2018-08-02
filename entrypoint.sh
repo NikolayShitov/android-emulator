@@ -1,12 +1,12 @@
 #!/bin/bash
 
 if [[ $EMULATOR == "" ]]; then
-    EMULATOR="android-19"
+    EMULATOR="android-28"
     echo "Using default emulator $EMULATOR"
 fi
 
 if [[ $ARCH == "" ]]; then
-    ARCH="x86"
+    ARCH="x86_64"
     echo "Using default arch $ARCH"
 fi
 echo EMULATOR  = "Requested API: ${EMULATOR} (${ARCH}) emulator."
@@ -34,5 +34,5 @@ else
     EMU="arm"
 fi
 
-echo "no" | /usr/local/android-sdk/tools/android create avd -f -n test -t ${EMULATOR} --abi default/${ARCH}
-echo "no" | /usr/local/android-sdk/tools/emulator64-${EMU} -avd test -noaudio -no-window -gpu off -verbose -qemu -usbdevice tablet -vnc :0
+echo "no" | /sdk/tools/android create avd -f -n test -t ${EMULATOR} --abi default/${ARCH}
+echo "no" | /sdk/tools/emulator64-${EMU} -avd test -noaudio -no-window -gpu off -verbose -qemu -usbdevice tablet -vnc :0

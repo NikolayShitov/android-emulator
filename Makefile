@@ -6,19 +6,22 @@ ifneq "$(RUNNED)" ""
 IP := $(shell docker inspect $(ALIAS) | grep "IPAddress\"" | head -n1 | cut -d '"' -f 4)
 endif
 STALE_IMAGES := $(shell docker images | grep "<none>" | awk '{print($$3)}')
-EMULATOR ?= "android-19"
-ARCH ?= "armeabi-v7a"
+EMULATOR ?= "android-28"
+ARCH ?= "x86_64"
 
 COLON := :
 
 .PHONY = run ports kill ps
 
+build:
+    docker volume create --name sdk
+
 all:
-	@docker build -q -t tracer0tong/android-emulator\:latest .
+	@docker build -q -t NikolayShitov/android-emulator\:latest .
 	@docker images
 
 run: clean
-	@docker run -e "EMULATOR=$(EMULATOR)" -e "ARCH=$(ARCH)" -d -P --name android --log-driver=json-file tracer0tong/android-emulator
+	@docker run -e "EMULATOR=$(EMULATOR)" -e "ARCH=$(ARCH)" -d -P --name android --log-driver=json-file NikolayShitov/android-emulator -v ~/Android/Sdk:/sdk
 
 ports:
 ifneq "$(RUNNED)" ""
