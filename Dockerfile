@@ -26,7 +26,7 @@ ENV API28 "system-images;android-28;google_apis;x86_64"
 
 RUN echo $API14
 
-RUN yes | ${ANDROID_TOOLS}/sdkmanager --licenses
+RUN yes | ${ANDOIRD_BIN}/sdkmanager --licenses
 
 # Install latest android tools and system images
 RUN ${ANDOIRD_BIN}/sdkmanager \
@@ -64,20 +64,20 @@ RUN ${ANDOIRD_BIN}/sdkmanager \
 		$API28
 		
 # Do you wish to create a custom hardware profile? [no]		
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API14 -k $API14 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API15 -k $API15 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API16 -k $API16 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API17 -k $API17 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API18 -k $API18 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API19 -k $API19 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API21 -k $API21 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API22 -k $API22 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API23 -k $API23 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API24 -k $API24 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API25 -k $API25 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API26 -k $API26 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API27 -k $API27 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDROID_TOOLS}/avdmanager -f -v create avd -n API28 -k $API28 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API14 -k $API14 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API15 -k $API15 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API16 -k $API16 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API17 -k $API17 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API18 -k $API18 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API19 -k $API19 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API21 -k $API21 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API22 -k $API22 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API23 -k $API23 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API24 -k $API24 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API25 -k $API25 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API26 -k $API26 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API27 -k $API27 -d "10.1in WXGA (Tablet)"
+RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API28 -k $API28 -d "10.1in WXGA (Tablet)"
 
 # Create fake keymap file
 RUN mkdir /usr/local/android-sdk/tools/keymaps && \
