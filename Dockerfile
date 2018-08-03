@@ -63,6 +63,8 @@ RUN ${ANDOIRD_BIN}/sdkmanager \
 		$API27 \
 		$API28
 		
+ENV SDKMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
+		
 # Do you wish to create a custom hardware profile? [no]		
 RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API14 -k $API14 -d "10.1in WXGA (Tablet)"
 RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API15 -k $API15 -d "10.1in WXGA (Tablet)"
