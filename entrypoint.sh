@@ -34,5 +34,4 @@ else
     EMU="arm"
 fi
 
-echo "no" | /sdk/tools/android create avd -f -n test -t ${EMULATOR} --abi default/${ARCH}
-echo "no" | /sdk/tools/emulator64-${EMU} -avd test -noaudio -no-window -gpu off -verbose -qemu -usbdevice tablet -vnc :0
+echo "no" | ${ANDROID_EMU}/emulator -avd $1 -no-boot-anim -noaudio -no-window -gpu off -verbose -qemu -vnc :2
