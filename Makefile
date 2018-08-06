@@ -13,13 +13,15 @@ COLON := :
 
 .PHONY = all run ports kill ps
 
-all:
-	@docker build -t dtdservices/android-emulator\:v1.0.2 .
-	@docker images
-	run
-
 run: clean
-	@docker run -e "ANDROID_EMULATOR_API_VERSION_FOR_START=$(EMULATOR)" -P --name android --log-driver=json-file dtdservices/android-emulator
+	@docker run -e "ANDROID_EMULATOR_API_VERSION_FOR_START=$(EMULATOR)" --privileged \
+	 -p 5037:5037 \
+	 -p 5554:5554 \
+	 -p 5555:5555 \
+	 -p 80:80 \
+	 -p 443:443 \
+	 -p 5902:5902 \
+	 --log-driver=json-file dtdservices/android-emulator\:v1.0.2
 
 ports:
 ifneq "$(RUNNED)" ""
@@ -43,3 +45,7 @@ endif
 
 ps:
 	@docker ps -a -f name=$(ALIAS)
+
+all:
+	@docker build -t dtdservices/android-emulator\:v1.0.2 .
+	@docker images

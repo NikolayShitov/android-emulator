@@ -6,8 +6,8 @@ ARG ANDROID_EMULATOR_API_VERSION_FOR_START=API28
 
 # Update packages
 RUN apt-get -y update \
-    && apt-get -y install software-properties-common bzip2 ssh net-tools openssh-server socat curl \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get -y install sudo qemu qemu-kvm libvirt-bin bridge-utils virt-manager cpu-checker libpulse0 software-properties-common bzip2 ssh net-tools openssh-server socat curl libguestfs-tools \
+    && apt-get clean
     
 ENV API14 "system-images;android-14;default;armeabi-v7a"
 ENV API15 "system-images;android-15;google_apis;x86"
@@ -24,7 +24,9 @@ ENV API26 "system-images;android-26;google_apis;x86_64"
 ENV API27 "system-images;android-27;google_apis;x86"
 ENV API28 "system-images;android-28;google_apis;x86_64"
 
-RUN echo $API14
+ENV SDKMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
+
+RUN echo $(${ANDOIRD_BIN}/sdkmanager --version)
 
 RUN yes | ${ANDOIRD_BIN}/sdkmanager --licenses
 
@@ -63,27 +65,27 @@ RUN ${ANDOIRD_BIN}/sdkmanager \
 		$API27 \
 		$API28
 		
-ENV SDKMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
+ENV AVDMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
 		
 # Do you wish to create a custom hardware profile? [no]		
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API14 -k $API14 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API15 -k $API15 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API16 -k $API16 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API17 -k $API17 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API18 -k $API18 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API19 -k $API19 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API21 -k $API21 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API22 -k $API22 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API23 -k $API23 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API24 -k $API24 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API25 -k $API25 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API26 -k $API26 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API27 -k $API27 -d "10.1in WXGA (Tablet)"
-RUN no | ${ANDOIRD_BIN}/avdmanager -f -v create avd -n API28 -k $API28 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API14 -k $API14 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API15 -k $API15 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API16 -k $API16 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API17 -k $API17 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API18 -k $API18 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API19 -k $API19 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API21 -k $API21 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API22 -k $API22 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API23 -k $API23 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API24 -k $API24 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API25 -k $API25 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API26 -k $API26 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API27 -k $API27 -d "10.1in WXGA (Tablet)"
+RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API28 -k $API28 -d "10.1in WXGA (Tablet)"
 
 # Create fake keymap file
-RUN mkdir /usr/local/android-sdk/tools/keymaps && \
-    touch /usr/local/android-sdk/tools/keymaps/en-us
+#RUN mkdir /usr/local/android-sdk/tools/keymaps && \
+#    touch /usr/local/android-sdk/tools/keymaps/en-us
 
 # Run sshd
 RUN mkdir /var/run/sshd && \
