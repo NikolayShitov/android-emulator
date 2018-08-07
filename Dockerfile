@@ -24,7 +24,7 @@ ENV API26 "system-images;android-26;google_apis;x86_64"
 ENV API27 "system-images;android-27;google_apis;x86"
 ENV API28 "system-images;android-28;google_apis;x86_64"
 
-ENV SDKMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
+#ENV SDKMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
 
 RUN echo $(${ANDOIRD_BIN}/sdkmanager --version)
 
@@ -65,7 +65,7 @@ RUN ${ANDOIRD_BIN}/sdkmanager \
 		$API27 \
 		$API28
 		
-ENV AVDMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
+#ENV AVDMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
 		
 # Do you wish to create a custom hardware profile? [no]		
 RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API14 -k $API14 -d "10.1in WXGA (Tablet)"
@@ -82,10 +82,6 @@ RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API25 -k $API25 -d "10.1in WXG
 RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API26 -k $API26 -d "10.1in WXGA (Tablet)"
 RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API27 -k $API27 -d "10.1in WXGA (Tablet)"
 RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API28 -k $API28 -d "10.1in WXGA (Tablet)"
-
-# Create fake keymap file
-#RUN mkdir /usr/local/android-sdk/tools/keymaps && \
-#    touch /usr/local/android-sdk/tools/keymaps/en-us
 
 # Run sshd
 RUN mkdir /var/run/sshd && \

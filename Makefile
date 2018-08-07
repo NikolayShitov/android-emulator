@@ -21,7 +21,7 @@ run: clean
 	 -p 80:80 \
 	 -p 443:443 \
 	 -p 5902:5902 \
-	 --log-driver=json-file dtdservices/android-emulator\:v1.0.2
+	 --log-driver=json-file dtdservices/android-emulator\:latest
 
 ports:
 ifneq "$(RUNNED)" ""
@@ -47,5 +47,5 @@ ps:
 	@docker ps -a -f name=$(ALIAS)
 
 all:
-	@docker build -t dtdservices/android-emulator\:v1.0.2 .
+	@docker build -t dtdservices/android-emulator\:latest .
 	@docker images
