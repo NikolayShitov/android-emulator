@@ -39,7 +39,7 @@ case "$1" in
 esac
 
 echo "Create, if no exists, virtual device for [$1]"
-${ANDOIRD_BIN}/avdmanager -v create avd -n $1 -k ${$1} -d "10.1in WXGA (Tablet)"
+${ANDOIRD_BIN}/avdmanager -v create avd -n $1 -k ${!1} -d "10.1in WXGA (Tablet)"
 
 echo "Running emulator for [$1]"
 echo ${ANDROID_EMU}/emulator -avd $1 -no-boot-anim -noaudio -no-window -gpu off -verbose -qemu -vnc :2 -enable-kvm

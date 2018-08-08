@@ -58,8 +58,8 @@ RUN yes | ${ANDOIRD_BIN}/sdkmanager --licenses
 # Install latest android tools and system images
 RUN ${ANDOIRD_BIN}/sdkmanager \
         "tools" \
-		"platform-tools" \
-		"emulator"
+        "platform-tools" \
+        "emulator"
 
 # Run sshd
 RUN mkdir /var/run/sshd && \
@@ -71,6 +71,6 @@ RUN mkdir /var/run/sshd && \
 ENV NOTVISIBLE "in users profile"
 
 # Add entrypoint
-ADD entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT /entrypoint.sh $ANDROID_EMULATOR_API_VERSION_FOR_START
+ADD entrypoint.sh ~/entrypoint.sh
+RUN chmod +x ~/entrypoint.sh
+ENTRYPOINT ~/entrypoint.sh $ANDROID_EMULATOR_API_VERSION_FOR_START
