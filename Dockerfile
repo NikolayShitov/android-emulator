@@ -72,5 +72,6 @@ ENV NOTVISIBLE "in users profile"
 
 # Add entrypoint
 COPY entrypoint.sh /opt/entrypoint.sh
+RUN ls /opt
 RUN /bin/chmod 777 /opt/entrypoint.sh
 ENTRYPOINT /opt/entrypoint.sh $ANDROID_EMULATOR_API_VERSION_FOR_START
