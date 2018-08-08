@@ -70,8 +70,8 @@ RUN mkdir /var/run/sshd && \
 
 ENV NOTVISIBLE "in users profile"
 
-# Add entrypoint
-COPY entrypoint.sh /opt/entrypoint.sh
+# Add entrypoint. current wirkdir - opt
+COPY entrypoint.sh entrypoint.sh
 RUN ls /opt
-RUN /bin/chmod 777 /opt/entrypoint.sh
-ENTRYPOINT /opt/entrypoint.sh $ANDROID_EMULATOR_API_VERSION_FOR_START
+RUN chmod +x entrypoint.sh
+ENTRYPOINT entrypoint.sh $ANDROID_EMULATOR_API_VERSION_FOR_START
