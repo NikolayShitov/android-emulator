@@ -10,21 +10,46 @@ RUN apt-get -y update \
     && apt-get clean
     
 ENV API14 "system-images;android-14;default;armeabi-v7a"
-ENV API15 "system-images;android-15;google_apis;x86"
-ENV API16 "system-images;android-16;google_apis;x86"
-ENV API17 "system-images;android-17;google_apis;x86"
-ENV API18 "system-images;android-18;google_apis;x86"
-ENV API19 "system-images;android-19;google_apis;x86"
-ENV API21 "system-images;android-21;google_apis;x86_64"
-ENV API22 "system-images;android-22;google_apis;x86_64"
-ENV API23 "system-images;android-23;google_apis;x86_64"
-ENV API24 "system-images;android-24;google_apis;x86_64"
-ENV API25 "system-images;android-25;google_apis;x86_64"
-ENV API26 "system-images;android-26;google_apis;x86_64"
-ENV API27 "system-images;android-27;google_apis;x86"
-ENV API28 "system-images;android-28;google_apis;x86_64"
+ENV PLATFORM14 "platforms;android-14"
 
-#ENV SDKMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
+ENV API15 "system-images;android-15;google_apis;x86"
+ENV PLATFORM15 "platforms;android-15"
+
+ENV API16 "system-images;android-16;google_apis;x86"
+ENV PLATFORM16 "platforms;android-16"
+
+ENV API17 "system-images;android-17;google_apis;x86"
+ENV PLATFORM17 "platforms;android-17"
+
+ENV API18 "system-images;android-18;google_apis;x86"
+ENV PLATFORM18 "platforms;android-18"
+
+ENV API19 "system-images;android-19;google_apis;x86"
+ENV PLATFORM19 "platforms;android-19"
+
+ENV API21 "system-images;android-21;google_apis;x86_64"
+ENV PLATFORM21 "platforms;android-21"
+
+ENV API22 "system-images;android-22;google_apis;x86_64"
+ENV PLATFORM22 "platforms;android-22"
+
+ENV API23 "system-images;android-23;google_apis;x86_64"
+ENV PLATFORM23 "platforms;android-23"
+
+ENV API24 "system-images;android-24;google_apis;x86_64"
+ENV PLATFORM24 "platforms;android-24"
+
+ENV API25 "system-images;android-25;google_apis;x86_64"
+ENV PLATFORM25 "platforms;android-25"
+
+ENV API26 "system-images;android-26;google_apis;x86_64"
+ENV PLATFORM26 "platforms;android-26"
+
+ENV API27 "system-images;android-27;google_apis;x86"
+ENV PLATFORM27 "platforms;android-27"
+
+ENV API28 "system-images;android-28;google_apis;x86_64"
+ENV PLATFORM28 "platforms;android-28"
 
 RUN echo $(${ANDOIRD_BIN}/sdkmanager --version)
 
@@ -34,54 +59,7 @@ RUN yes | ${ANDOIRD_BIN}/sdkmanager --licenses
 RUN ${ANDOIRD_BIN}/sdkmanager \
         "tools" \
 		"platform-tools" \
-		"emulator" \
-		"platforms;android-14" \
-		"platforms;android-15" \
-		"platforms;android-16" \
-		"platforms;android-17" \
-		"platforms;android-18" \
-		"platforms;android-19" \
-		"platforms;android-20" \
-		"platforms;android-21" \
-		"platforms;android-22" \
-		"platforms;android-23" \
-		"platforms;android-24" \
-		"platforms;android-25" \
-		"platforms;android-26" \
-		"platforms;android-27" \
-		"platforms;android-28" \
-		$API14 \
-		$API15 \
-		$API16 \
-		$API17 \
-		$API18 \
-		$API19 \
-		$API21 \
-		$API22 \
-		$API23 \
-		$API24 \
-		$API25 \
-		$API26 \
-		$API27 \
-		$API28
-		
-#ENV AVDMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
-		
-# Do you wish to create a custom hardware profile? [no]		
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API14 -k $API14 -d "10.1in WXGA (Tablet)"
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API15 -k $API15 -d "10.1in WXGA (Tablet)"
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API16 -k $API16 -d "10.1in WXGA (Tablet)"
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API17 -k $API17 -d "10.1in WXGA (Tablet)"
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API18 -k $API18 -d "10.1in WXGA (Tablet)"
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API19 -k $API19 -d "10.1in WXGA (Tablet)"
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API21 -k $API21 -d "10.1in WXGA (Tablet)"
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API22 -k $API22 -d "10.1in WXGA (Tablet)"
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API23 -k $API23 -d "10.1in WXGA (Tablet)"
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API24 -k $API24 -d "10.1in WXGA (Tablet)"
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API25 -k $API25 -d "10.1in WXGA (Tablet)"
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API26 -k $API26 -d "10.1in WXGA (Tablet)"
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API27 -k $API27 -d "10.1in WXGA (Tablet)"
-RUN ${ANDOIRD_BIN}/avdmanager -v create avd -f -n API28 -k $API28 -d "10.1in WXGA (Tablet)"
+		"emulator"
 
 # Run sshd
 RUN mkdir /var/run/sshd && \
