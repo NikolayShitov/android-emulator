@@ -71,6 +71,6 @@ RUN mkdir /var/run/sshd && \
 ENV NOTVISIBLE "in users profile"
 
 # Add entrypoint
-COPY entrypoint.sh ~/entrypoint.sh
-RUN chmod +x ~/entrypoint.sh
-ENTRYPOINT ~/entrypoint.sh $ANDROID_EMULATOR_API_VERSION_FOR_START
+COPY entrypoint.sh /opt/entrypoint.sh
+RUN chmod +x /opt/entrypoint.sh
+ENTRYPOINT /opt/entrypoint.sh $ANDROID_EMULATOR_API_VERSION_FOR_START
