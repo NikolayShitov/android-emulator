@@ -4,7 +4,16 @@ echo "Run sshd"
 /usr/sbin/sshd
 
 echo "Detect ip and forward ports to outside interface via socat"
-ip=$(ifconfig  | grep 'inet '| grep -v '127.0.0.1' | cut -d' ' -f 10 | awk '{ print $1 }')
+ip=$(ifconfig  | grep 'inet ' | grep -v '127.0.0.1' | cut -d' ' -f 12 | cut -d':' -f 2 | head -n 1)
+
+if [ -z "$ip" ]
+then
+  echo "\$ip is empty!"
+  exit 1
+else
+  echo "\$ip is [${ip}]"
+fi
+
 echo "IP is: [${ip}]"
 echo "running socat port 5037"
 socat tcp-listen:5037,bind=$ip,fork tcp:127.0.0.1:5037 &
