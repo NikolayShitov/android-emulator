@@ -3,6 +3,7 @@ FROM dtdservices/android-sdk-docker
 MAINTAINER cheshir "ns@devtodev.com"
 
 ARG ANDROID_EMULATOR_API_VERSION_FOR_START=API28
+ENV ANDROID_EMULATOR_API_VERSION_FOR_START=${ANDROID_EMULATOR_API_VERSION_FOR_START}
 
 # Update packages
 RUN apt-get -y update \
@@ -74,4 +75,4 @@ ENV NOTVISIBLE "in users profile"
 COPY entrypoint.sh entrypoint.sh
 RUN ls /opt
 RUN chmod +x entrypoint.sh
-ENTRYPOINT ["/opt/entrypoint.sh", ${ANDROID_EMULATOR_API_VERSION_FOR_START}]
+ENTRYPOINT ["/opt/entrypoint.sh"]
