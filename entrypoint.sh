@@ -4,7 +4,7 @@ echo "Run sshd"
 /usr/sbin/sshd
 
 echo "Detect ip and forward ports to outside interface via socat"
-ip=$(ifconfig  | grep 'inet '| grep -v '127.0.0.1' | cut -d' ' -f 10 | awk '{ print ${ANDROID_EMULATOR_API_VERSION_FOR_START}}')
+ip=$(ifconfig  | grep 'inet '| grep -v '127.0.0.1' | cut -d' ' -f 10 | awk '{ print $ANDROID_EMULATOR_API_VERSION_FOR_START}')
 echo "IP is: [${ip}]"
 echo "running socat port 5037"
 socat tcp-listen:5037,bind=$ip,fork tcp:127.0.0.1:5037 &
