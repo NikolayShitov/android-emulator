@@ -14,7 +14,6 @@ else
   echo "\$ip is [${ip}]"
 fi
 
-echo "IP is: [${ip}]"
 echo "running socat port 5037"
 socat tcp-listen:5037,bind=$ip,fork tcp:127.0.0.1:5037 &
 echo "running socat port 5554"
