@@ -74,4 +74,4 @@ ENV NOTVISIBLE "in users profile"
 COPY entrypoint.sh entrypoint.sh
 RUN ls /opt
 RUN chmod +x entrypoint.sh
-ENTRYPOINT entrypoint.sh $ANDROID_EMULATOR_API_VERSION_FOR_START
+ENTRYPOINT ["/opt/entrypoint.sh", "${ANDROID_EMULATOR_API_VERSION_FOR_START}"]
