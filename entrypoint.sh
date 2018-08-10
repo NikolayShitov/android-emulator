@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function update {
-	res=${${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$1\s*$"}
+	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$1\s*$")
 	if [ $? -eq 0 ]
 	then
 		echo "package already installed and updated: [$res]"
@@ -10,7 +10,7 @@ function update {
 		${ANDOIRD_BIN}/sdkmanager $1
 	fi
 	
-	res=${${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$2\s*$"}
+	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$2\s*$")
 	if [ $? -eq 0 ]
 	then
 		echo "package already installed and updated: [$res]"
