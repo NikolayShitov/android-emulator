@@ -1,5 +1,25 @@
 #!/bin/bash
 
+function update {
+	res=${${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$1\s*$"}
+	if [ $? -eq 0 ]
+	then
+		echo "package already installed and updated: [$res]"
+	else
+		echo "install package: [$res]"
+		${ANDOIRD_BIN}/sdkmanager $1
+	fi
+	
+	res=${${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$2\s*$"}
+	if [ $? -eq 0 ]
+	then
+		echo "package already installed and updated: [$res]"
+	else
+		echo "install package: [$res]"
+		${ANDOIRD_BIN}/sdkmanager $2
+	fi
+}
+
 echo "Run sshd"
 /usr/sbin/sshd
 
@@ -61,23 +81,3 @@ ${ANDOIRD_BIN}/avdmanager -v create avd \
 echo "Running emulator for [$ANDROID_EMULATOR_API_VERSION_FOR_START]"
 echo ${ANDROID_EMU}/emulator \
 	-avd ${ANDROID_EMULATOR_API_VERSION_FOR_START} -no-boot-anim -noaudio -no-window -gpu off -verbose -qemu -vnc :2 -enable-kvm
-	
-function update() {
-	res=${${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$1\s*$"}
-	if [ $? -eq 0 ]
-	then
-		echo "package already installed and updated: [$res]"
-	else
-		echo "install package: [$res]"
-		${ANDOIRD_BIN}/sdkmanager $1
-	fi
-	
-	res=${${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$2\s*$"}
-	if [ $? -eq 0 ]
-	then
-		echo "package already installed and updated: [$res]"
-	else
-		echo "install package: [$res]"
-		${ANDOIRD_BIN}/sdkmanager $2
-	fi
-}
