@@ -1,7 +1,16 @@
 #!/bin/bash
 
 function update {
-	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$1\s*$")
+	echo "try see only installed"
+	${ANDOIRD_BIN}/sdkmanager --list | sed -e 'Available Packages'
+	
+	echo "try see only installed without header"
+	${ANDOIRD_BIN}/sdkmanager --list | sed -e 'Available Packages' | tail -n +4
+	
+	echo "try see only installed without header first column"
+	${ANDOIRD_BIN}/sdkmanager --list | sed -e 'Available Packages' | tail -n +4  | cut -d'|' -f 1
+	
+	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e 'Available Packages' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$1\s*$")
 	if [ $? -eq 0 ]
 	then
 		echo "package already installed and updated: [$res]"
@@ -47,6 +56,9 @@ socat tcp-listen:443,bind=$ip,fork tcp:127.0.0.1:443 &
 
 echo "See free space:"
 df
+
+echo "Packages info"
+${ANDOIRD_BIN}/sdkmanager --list
 
 echo "Update installed sdk packages"
 ${ANDOIRD_BIN}/sdkmanager --update
