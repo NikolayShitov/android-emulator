@@ -2,15 +2,15 @@
 
 function update {
 	echo "try see only installed"
-	${ANDOIRD_BIN}/sdkmanager --list | sed -e 'Available Packages'
+	echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q')
 	
 	echo "try see only installed without header"
-	${ANDOIRD_BIN}/sdkmanager --list | sed -e 'Available Packages' | tail -n +4
+	echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4)
 	
 	echo "try see only installed without header first column"
-	${ANDOIRD_BIN}/sdkmanager --list | sed -e 'Available Packages' | tail -n +4  | cut -d'|' -f 1
+	echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4  | cut -d'|' -f 1)
 	
-	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e 'Available Packages' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$1\s*$")
+	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$1\s*$")
 	if [ $? -eq 0 ]
 	then
 		echo "package already installed and updated: [$res]"
