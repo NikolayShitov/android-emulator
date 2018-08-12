@@ -13,7 +13,7 @@ function update {
 	echo $1
 	
 	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
-	if [ $? -eq 0 && -n "${res[$1]}" ]
+	if [ $? -eq 0 ] && [ -n "${res[$1]}" ]
 	then
 		echo "package already installed and updated: [$res]"
 	else
@@ -22,7 +22,7 @@ function update {
 	fi
 	
 	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
-	if [ $? -eq 0 && -n "${res[$2]}" ]
+	if [ $? -eq 0 ] && [ -n "${res[$2]}" ]
 	then
 		echo "package already installed and updated: [$res]"
 	else
