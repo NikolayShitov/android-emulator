@@ -5,13 +5,15 @@ function update {
 	echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q')
 	
 	echo "try see only installed without header"
-	echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4)
+	echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4)
 	
 	echo "try see only installed without header first column"
-	echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4  | cut -d'|' -f 1)
+	echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
 	
-	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$1\s*$")
-	if [ $? -eq 0 ]
+	echo $1
+	
+	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
+	if [ $? -eq 0 && -n "${res[$1]}" ]
 	then
 		echo "package already installed and updated: [$res]"
 	else
@@ -19,8 +21,8 @@ function update {
 		${ANDOIRD_BIN}/sdkmanager $1
 	fi
 	
-	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | tail -n +4 | cut -d'|' -f 1 | grep "^\s*$2\s*$")
-	if [ $? -eq 0 ]
+	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
+	if [ $? -eq 0 && -n "${res[$2]}" ]
 	then
 		echo "package already installed and updated: [$res]"
 	else
