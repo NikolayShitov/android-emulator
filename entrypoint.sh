@@ -1,19 +1,40 @@
 #!/bin/bash
 
+function array_contains {
+	array=${1}
+	item=${2}
+	
+	echo "source array:"
+	echo $array
+	
+	echo "item for check:"
+	echo $item
+
+	for i in ${array[@]}
+	do
+		if [ $i == $item ]
+		then
+			return 1
+		fi
+	done
+
+	return 0
+}
+
 function update {
-	echo "try see only installed"
-	echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q')
+	#echo "try see only installed"
+	#echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q')
 	
-	echo "try see only installed without header"
-	echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4)
+	#echo "try see only installed without header"
+	#echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4)
 	
-	echo "try see only installed without header first column"
-	echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
+	#echo "try see only installed without header first column"
+	#echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
 	
-	echo $1
+	#echo $1
 	
 	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
-	if [ $? -eq 0 ] && [ -n "${res[$1]}" ]
+	if [ $? -eq 0 ] && [ array_contains $res $1 ]
 	then
 		echo "package already installed and updated: [$res]"
 	else
@@ -22,7 +43,7 @@ function update {
 	fi
 	
 	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
-	if [ $? -eq 0 ] && [ -n "${res[$2]}" ]
+	if [ $? -eq 0 ] && [ array_contains $res $2 ]
 	then
 		echo "package already installed and updated: [$res]"
 	else
