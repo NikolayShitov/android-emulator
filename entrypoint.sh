@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function array_contains {
-    local name=$1[@]
+    local name="$1[@]"
 	local arr=("${!name}")
 	local item="$2"
 
@@ -19,21 +19,25 @@ function array_contains {
 }
 
 function update {
-	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
+	mapfile -t res < <(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
+	retcode=$?
+	echo "recode of sdk list installed packages: [$retcode]"
+	
 	item_in_array=$(array_contains res "$1")
-	if [ $? -eq 0 ] && [ $item_in_array -eq 1 ]
+	echo "[$1] in array installed packages?: [$item_in_array]"
+	if [ $retcode -eq 0 ] && [ $item_in_array -eq 1 ]
 	then
-		echo "package already installed and updated: [${res[@]}]"
+		echo "package already installed and updated: [${res[*]}]"
 	else
 		echo "install package: [$1]"
 		${ANDOIRD_BIN}/sdkmanager $1
 	fi
 	
-	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
 	item_in_array=$(array_contains res "$2")
-	if [ $? -eq 0 ] && [ $item_in_array -eq 1 ]
+	echo "[$2] in array installed packages?: [$item_in_array]"	
+	if [ $retcode -eq 0 ] && [ $item_in_array -eq 1 ]
 	then
-		echo "package already installed and updated: [${res[@]}]"
+		echo "package already installed and updated: [${res[*]}]"
 	else
 		echo "install package: [$2]"
 		${ANDOIRD_BIN}/sdkmanager $2
