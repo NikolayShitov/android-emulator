@@ -19,34 +19,23 @@ function array_contains {
 }
 
 function update {
-	#echo "try see only installed"
-	#echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q')
-	
-	#echo "try see only installed without header"
-	#echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4)
-	
-	#echo "try see only installed without header first column"
-	#echo $(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
-	
-	#echo $1
-	
 	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
 	item_in_array=$(array_contains res "$1")
-	if [ $? -eq 0 ] && [ item_in_array -eq 1 ]
+	if [ $? -eq 0 ] && [ $item_in_array -eq 1 ]
 	then
-		echo "package already installed and updated: [$res]"
+		echo "package already installed and updated: [${res[@]}]"
 	else
-		echo "install package: [$res]"
+		echo "install package: [$1]"
 		${ANDOIRD_BIN}/sdkmanager $1
 	fi
 	
 	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
 	item_in_array=$(array_contains res "$2")
-	if [ $? -eq 0 ] && [ item_in_array -eq 1 ]
+	if [ $? -eq 0 ] && [ $item_in_array -eq 1 ]
 	then
-		echo "package already installed and updated: [$res]"
+		echo "package already installed and updated: [${res[@]}]"
 	else
-		echo "install package: [$res]"
+		echo "install package: [$1]"
 		${ANDOIRD_BIN}/sdkmanager $2
 	fi
 }
