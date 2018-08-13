@@ -1,24 +1,21 @@
 #!/bin/bash
 
 function array_contains {
-	array=("${1}")
-	item=${2}
-	
-	echo "source array:"
-	echo $array
-	
-	echo "item for check:"
-	echo $item
+    local name=$1[@]
+	local arr=("${!name}")
+	local item="$2"
 
-	for i in ${array[@]}
+	for i in "${arr[@]}"
 	do
-		if [ $i == $item ]
+		if [ "$i" == "$item" ]
 		then
-			return 1
+			echo "1"
+            return
 		fi
 	done
 
-	return 0
+    echo "0"
+    return
 }
 
 function update {
@@ -34,7 +31,7 @@ function update {
 	#echo $1
 	
 	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
-	item_in_array = array_contains "${res[@]}" "$1"
+	item_in_array=$(array_contains res "$1")
 	if [ $? -eq 0 ] && [ item_in_array -eq 1 ]
 	then
 		echo "package already installed and updated: [$res]"
@@ -44,7 +41,7 @@ function update {
 	fi
 	
 	res=$(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
-	item_in_array = array_contains "${res[@]}" "$2"
+	item_in_array=$(array_contains res "$2")
 	if [ $? -eq 0 ] && [ item_in_array -eq 1 ]
 	then
 		echo "package already installed and updated: [$res]"
