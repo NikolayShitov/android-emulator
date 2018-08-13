@@ -35,7 +35,7 @@ function update {
 	then
 		echo "package already installed and updated: [${res[@]}]"
 	else
-		echo "install package: [$1]"
+		echo "install package: [$2]"
 		${ANDOIRD_BIN}/sdkmanager $2
 	fi
 }
