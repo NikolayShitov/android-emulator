@@ -52,6 +52,8 @@ ENV PLATFORM27 "platforms;android-27"
 ENV API28 "system-images;android-28;google_apis;x86_64"
 ENV PLATFORM28 "platforms;android-28"
 
+ENV JAVA_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
+
 RUN echo $(${ANDOIRD_BIN}/sdkmanager --version)
 
 RUN yes | ${ANDOIRD_BIN}/sdkmanager --licenses

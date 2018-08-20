@@ -110,3 +110,5 @@ ${ANDROID_EMU}/emulator \
 	-avd ${ANDROID_EMULATOR_API_VERSION_FOR_START} \
 	-no-boot-anim -noaudio -no-window -gpu off -verbose \
 	-qemu -vnc :2 -enable-kvm
+
+${ANDROID_TOOLS}/adb logcat -b all -v color -d
