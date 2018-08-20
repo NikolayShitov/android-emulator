@@ -106,5 +106,7 @@ ${ANDOIRD_BIN}/avdmanager -v create avd \
 	-d "10.1in WXGA (Tablet)"
 
 echo "Running emulator for [$ANDROID_EMULATOR_API_VERSION_FOR_START]"
-echo ${ANDROID_EMU}/emulator \
-	-avd ${ANDROID_EMULATOR_API_VERSION_FOR_START} -no-boot-anim -noaudio -no-window -gpu off -verbose -qemu -vnc :2 -enable-kvm
+${ANDROID_EMU}/emulator \
+	-avd ${ANDROID_EMULATOR_API_VERSION_FOR_START} \
+	-no-boot-anim -noaudio -no-window -gpu off -verbose \
+	-qemu -vnc :2 -enable-kvm
