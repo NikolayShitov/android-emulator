@@ -6,7 +6,7 @@ ifneq "$(RUNNED)" ""
 IP := $(shell docker inspect $(ALIAS) | grep "IPAddress\"" | head -n1 | cut -d '"' -f 4)
 endif
 STALE_IMAGES := $(shell docker images | grep "<none>" | awk '{print($$3)}')
-EMULATOR ?= "API28"
+EMULATOR ?= "API14"
 ARCH ?= "x86_64"
 
 COLON := :
