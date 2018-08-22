@@ -44,9 +44,7 @@ function update {
     fi
 }
 
-service ssh restart
-
-ifconfig
+/usr/bin/sshd
 
 echo "Detect ip and forward ports to outside interface via socat"
 # show output for interface eth0
