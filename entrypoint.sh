@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 function array_contains {
     local name="$1[@]"
     local arr=("${!name}")
@@ -44,7 +46,7 @@ function update {
     fi
 }
 
-/usr/bin/sshd
+service ssh restart
 
 echo "Detect ip and forward ports to outside interface via socat"
 # show output for interface eth0

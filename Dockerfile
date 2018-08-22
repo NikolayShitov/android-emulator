@@ -2,12 +2,15 @@ FROM dtdservices/android-sdk-docker
 
 MAINTAINER cheshir "ns@devtodev.com"
 
+# Specially for SSH access and port redirection
+ENV ROOTPASSWORD android
+
 ARG ANDROID_EMULATOR_API_VERSION_FOR_START=API28
 ENV ANDROID_EMULATOR_API_VERSION_FOR_START=${ANDROID_EMULATOR_API_VERSION_FOR_START}
 
 # Update packages
 RUN apt-get -y update \
-    && apt-get -y install sudo qemu qemu-kvm libvirt-bin bridge-utils virt-manager cpu-checker libpulse0 software-properties-common bzip2 socat curl libguestfs-tools net-tools \
+    && apt-get -y install sudo qemu qemu-kvm libvirt-bin bridge-utils virt-manager cpu-checker libpulse0 software-properties-common bzip2 socat curl libguestfs-tools net-tools openssh-server \
     && apt-get clean
 
 ENV API14 "system-images;android-14;default;armeabi-v7a"
@@ -63,8 +66,17 @@ RUN ${ANDOIRD_BIN}/sdkmanager \
         "tools" \
         "platform-tools" \
         "emulator"
+        
+# setup sshd
+RUN mkdir /var/run/sshd && \
+RUN echo "root:${ROOTPASSWORD}" | chpasswd
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
 ENV NOTVISIBLE "in users profile"
+
+RUN echo "export VISIBLE=now" >> /etc/profile
 
 # Add entrypoint. current wirkdir - opt
 COPY entrypoint.sh entrypoint.sh
