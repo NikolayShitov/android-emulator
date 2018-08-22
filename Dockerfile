@@ -7,9 +7,9 @@ ENV ANDROID_EMULATOR_API_VERSION_FOR_START=${ANDROID_EMULATOR_API_VERSION_FOR_ST
 
 # Update packages
 RUN apt-get -y update \
-    && apt-get -y install sudo qemu qemu-kvm libvirt-bin bridge-utils virt-manager cpu-checker libpulse0 software-properties-common bzip2 net-tools socat curl libguestfs-tools \
+    && apt-get -y install sudo qemu qemu-kvm libvirt-bin bridge-utils virt-manager cpu-checker libpulse0 software-properties-common bzip2 socat curl libguestfs-tools \
     && apt-get clean
-    
+
 ENV API14 "system-images;android-14;default;armeabi-v7a"
 ENV PLATFORM14 "platforms;android-14"
 

@@ -15,10 +15,12 @@ COLON := :
 
 run: clean
 	@docker run -e "ANDROID_EMULATOR_API_VERSION_FOR_START=$(EMULATOR)" --privileged \
+	 -p 23:22 \
+	 -p 81:80 \
+	 -p 443:443 \
 	 -p 5037:5037 \
 	 -p 5554:5554 \
 	 -p 5555:5555 \
-	 -p 443:443 \
 	 -p 5902:5902 \
 	 --log-driver=json-file dtdservices/android-emulator
 

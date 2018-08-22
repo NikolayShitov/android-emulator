@@ -44,7 +44,7 @@ function update {
     fi
 }
 
-/usr/sbin/sshd
+service ssh restart
 
 ifconfig
 
@@ -74,8 +74,8 @@ echo "running socat port 80"
 socat tcp-listen:80,bind=$ip,fork tcp:127.0.0.1:80 &
 echo "running socat port 443"
 socat tcp-listen:443,bind=$ip,fork tcp:127.0.0.1:443 &
-echo "running socat port 443"
-socat tcp-listen:443,bind=$ip,fork tcp:127.0.0.1:5902 &
+#echo "running socat port 443"
+#socat tcp-listen:443,bind=$ip,fork tcp:127.0.0.1:5902 &
 
 echo "See free space:"
 df
