@@ -22,14 +22,26 @@ ENV DEBIAN_FRONTEND noninteractive
 # Update packages
 RUN dpkg --add-architecture i386
 RUN apt-get -y update
-RUN apt-get -y install sudo software-properties-common bzip2 socat curl net-tools openssh-server
+RUN apt-get -y install sudo bzip2 socat curl net-tools openssh-server
 RUN apt-get -y install qemu qemu-kvm libvirt-bin bridge-utils virt-manager cpu-checker libpulse0 libguestfs-tools
-RUN apt-get -y install default-jre default-jdk
+
+RUN echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
+RUN echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
+RUN apt-get -y install software-properties-common
+RUN add-apt-repository ppa:webupd8team/java \
+    && apt-get -y update \
+    && apt-get -y install oracle-java8-installer oracle-java8-set-default
+    
+RUN update-alternatives --display java
+
 RUN apt-get clean
 
 # Export JAVA_HOME variable
-ENV JAVA_HOME /usr/lib/jvm/default-java
-RUN echo $JAVA_HOME
+#RUN export JAVA_HOME=$(which java | head -n 1)
+#RUN which java
+# /usr/lib/jvm/default-java
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+RUN ls ${JAVA_HOME}
 
 ENV API14 "system-images;android-14;default;armeabi-v7a"
 ENV PLATFORM14 "platforms;android-14"
@@ -73,20 +85,19 @@ ENV PLATFORM27 "platforms;android-27"
 ENV API28 "system-images;android-28;google_apis;x86_64"
 ENV PLATFORM28 "platforms;android-28"
 
-ENV JAVA_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
+#ENV SDKMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
+#ENV AVDMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
 
-RUN echo $(${ANDOIRD_BIN}/sdkmanager --version)
-
-RUN yes | ${ANDOIRD_BIN}/sdkmanager --licenses
+RUN cd ${ANDOIRD_BIN} && yes | ./sdkmanager --licenses
 
 # Install latest android tools and system images
-RUN ${ANDOIRD_BIN}/sdkmanager \
+RUN cd ${ANDOIRD_BIN} && ./sdkmanager \
         "tools" \
         "platform-tools" \
         "emulator"
         
 # setup sshd
-RUN mkdir /var/run/sshd && \
+RUN mkdir /var/run/sshd
 RUN echo "sshd : ALL : allow" >> /etc/hosts.allow
 RUN echo "root:${ROOTPASSWORD}" | chpasswd
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
