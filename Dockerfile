@@ -2,16 +2,34 @@ FROM dtdservices/android-sdk-docker
 
 MAINTAINER cheshir "ns@devtodev.com"
 
+# Expose ADB, ADB control and VNC ports
+EXPOSE 22
+EXPOSE 5037
+EXPOSE 5554
+EXPOSE 5555
+EXPOSE 5902
+EXPOSE 80
+EXPOSE 443
+
 # Specially for SSH access and port redirection
 ENV ROOTPASSWORD android
 
 ARG ANDROID_EMULATOR_API_VERSION_FOR_START=API28
 ENV ANDROID_EMULATOR_API_VERSION_FOR_START=${ANDROID_EMULATOR_API_VERSION_FOR_START}
 
+ENV DEBIAN_FRONTEND noninteractive
+
 # Update packages
-RUN apt-get -y update \
-    && apt-get -y install sudo qemu qemu-kvm libvirt-bin bridge-utils virt-manager cpu-checker libpulse0 software-properties-common bzip2 socat curl libguestfs-tools net-tools openssh-server \
-    && apt-get clean
+RUN dpkg --add-architecture i386
+RUN apt-get -y update
+RUN apt-get -y install sudo software-properties-common bzip2 socat curl net-tools openssh-server
+RUN apt-get -y install qemu qemu-kvm libvirt-bin bridge-utils virt-manager cpu-checker libpulse0 libguestfs-tools
+RUN apt-get -y install default-jre default-jdk
+RUN apt-get clean
+
+# Export JAVA_HOME variable
+ENV JAVA_HOME /usr/lib/jvm/default-java
+RUN echo $JAVA_HOME
 
 ENV API14 "system-images;android-14;default;armeabi-v7a"
 ENV PLATFORM14 "platforms;android-14"
@@ -69,9 +87,12 @@ RUN ${ANDOIRD_BIN}/sdkmanager \
         
 # setup sshd
 RUN mkdir /var/run/sshd && \
+RUN echo "sshd : ALL : allow" >> /etc/hosts.allow
 RUN echo "root:${ROOTPASSWORD}" | chpasswd
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+RUN sed -i 's/#AllowTcpForwarding yes/AllowTcpForwarding yes/' /etc/ssh/sshd_config
+RUN echo "AllowUsers root" >> /etc/ssh/sshd_config
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
 ENV NOTVISIBLE "in users profile"
