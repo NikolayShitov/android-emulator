@@ -22,7 +22,7 @@ function update {
     mapfile -t res < <(${ANDOIRD_BIN}/sdkmanager --list | sed -e '/Available Packages/q' | head -n-2 | tail -n +4 | cut -d'|' -f 1)
     retcode=$?
     echo "recode of sdk list installed packages: [$retcode]"
-    
+
     item_in_array=$(array_contains res "$1")
     echo "[$1] in array installed packages?: [$item_in_array]"
     if [ $retcode -eq 0 ] && [ $item_in_array -eq 1 ]
@@ -32,7 +32,7 @@ function update {
         echo "install package: [$1]"
         ${ANDOIRD_BIN}/sdkmanager $1
     fi
-    
+
     item_in_array=$(array_contains res "$2")
     echo "[$2] in array installed packages?: [$item_in_array]"  
     if [ $retcode -eq 0 ] && [ $item_in_array -eq 1 ]
@@ -43,9 +43,6 @@ function update {
         ${ANDOIRD_BIN}/sdkmanager $2
     fi
 }
-
-echo "Run sshd"
-/usr/sbin/sshd
 
 ifconfig
 
