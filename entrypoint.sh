@@ -44,6 +44,8 @@ function update {
     fi
 }
 
+/usr/sbin/sshd
+
 ifconfig
 
 echo "Detect ip and forward ports to outside interface via socat"
