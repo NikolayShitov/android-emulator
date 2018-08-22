@@ -22,8 +22,10 @@ ENV DEBIAN_FRONTEND noninteractive
 # Update packages
 RUN dpkg --add-architecture i386
 RUN apt-get -y update
-RUN apt-get -y install sudo bzip2 socat curl net-tools openssh-server
+RUN apt-get -y install sudo bzip2 socat curl net-tools openssh-server libgl1-mesa-glx:i386 libgl1-mesa-glx
 RUN apt-get -y install qemu qemu-kvm libvirt-bin bridge-utils virt-manager cpu-checker libpulse0 libguestfs-tools
+
+RUN ldconfig -p | grep libGL.so.1
 
 RUN echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
 RUN echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
@@ -37,9 +39,6 @@ RUN update-alternatives --display java
 RUN apt-get clean
 
 # Export JAVA_HOME variable
-#RUN export JAVA_HOME=$(which java | head -n 1)
-#RUN which java
-# /usr/lib/jvm/default-java
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 RUN ls ${JAVA_HOME}
 
@@ -85,9 +84,6 @@ ENV PLATFORM27 "platforms;android-27"
 ENV API28 "system-images;android-28;google_apis;x86_64"
 ENV PLATFORM28 "platforms;android-28"
 
-#ENV SDKMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
-#ENV AVDMANAGER_OPTS "-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
-
 RUN cd ${ANDOIRD_BIN} && yes | ./sdkmanager --licenses
 
 # Install latest android tools and system images
@@ -100,10 +96,16 @@ RUN cd ${ANDOIRD_BIN} && ./sdkmanager \
 RUN mkdir /var/run/sshd
 RUN echo "sshd : ALL : allow" >> /etc/hosts.allow
 RUN echo "root:${ROOTPASSWORD}" | chpasswd
-RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
-RUN sed -i 's/#AllowTcpForwarding yes/AllowTcpForwarding yes/' /etc/ssh/sshd_config
-RUN echo "AllowUsers root" >> /etc/ssh/sshd_config
+
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
+RUN sed -i 's/#PermitRootLogin/PermitRootLogin/g' /etc/ssh/sshd_config
+
+RUN sed -i 's/PubkeyAuthentication no/PubkeyAuthentication yes/g' /etc/ssh/sshd_config
+RUN sed -i 's/#PubkeyAuthentication/PubkeyAuthentication/g' /etc/ssh/sshd_config
+
+RUN sed -i 's/AllowTcpForwarding no/AllowTcpForwarding yes/g' /etc/ssh/sshd_config
+RUN sed -i 's/#AllowTcpForwarding/AllowTcpForwarding/g' /etc/ssh/sshd_config
+
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
 ENV NOTVISIBLE "in users profile"

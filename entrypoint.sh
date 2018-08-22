@@ -2,6 +2,9 @@
 
 set -e
 
+#echo "see places libGL"
+#ldconfig -p | grep libGL.so.1
+
 function array_contains {
     local name="$1[@]"
     local arr=("${!name}")
@@ -46,6 +49,7 @@ function update {
     fi
 }
 
+echo "Start ssh"
 service ssh restart
 
 echo "Detect ip and forward ports to outside interface via socat"
@@ -74,33 +78,31 @@ echo "running socat port 80"
 socat tcp-listen:80,bind=$ip,fork tcp:127.0.0.1:80 &
 echo "running socat port 443"
 socat tcp-listen:443,bind=$ip,fork tcp:127.0.0.1:443 &
-#echo "running socat port 443"
-#socat tcp-listen:443,bind=$ip,fork tcp:127.0.0.1:5902 &
 
-echo "See free space:"
-df
+#echo "See free space:"
+#df
 
-echo "Packages info"
-${ANDOIRD_BIN}/sdkmanager --list
+#echo "Packages info"
+#${ANDOIRD_BIN}/sdkmanager --list
 
 echo "Update installed sdk packages"
 ${ANDOIRD_BIN}/sdkmanager --update
 
 echo "Install/update sysimage and platform for [${ANDROID_EMULATOR_API_VERSION_FOR_START}]"
 case "${ANDROID_EMULATOR_API_VERSION_FOR_START}" in
-    ${!API14@}) update ${PLATFORM14} ${API14};;
-    ${!API15@}) update ${PLATFORM15} ${API15};;
-    ${!API16@}) update ${PLATFORM16} ${API16};;
-    ${!API17@}) update ${PLATFORM17} ${API17};;
-    ${!API18@}) update ${PLATFORM18} ${API18};;
-    ${!API19@}) update ${PLATFORM19} ${API19};;
+    ${!API14@}) export LD_LIBRARY_PATH="/usr/lib/i386-linux-gnu/mesa" && update ${PLATFORM14} ${API14};;
+    ${!API15@}) export LD_LIBRARY_PATH="/usr/lib/i386-linux-gnu/mesa" && update ${PLATFORM15} ${API15};;
+    ${!API16@}) export LD_LIBRARY_PATH="/usr/lib/i386-linux-gnu/mesa" && update ${PLATFORM16} ${API16};;
+    ${!API17@}) export LD_LIBRARY_PATH="/usr/lib/i386-linux-gnu/mesa" && update ${PLATFORM17} ${API17};;
+    ${!API18@}) export LD_LIBRARY_PATH="/usr/lib/i386-linux-gnu/mesa" && update ${PLATFORM18} ${API18};;
+    ${!API19@}) export LD_LIBRARY_PATH="/usr/lib/i386-linux-gnu/mesa" && update ${PLATFORM19} ${API19};;
     ${!API21@}) update ${PLATFORM21} ${API21};;
     ${!API22@}) update ${PLATFORM22} ${API22};;
     ${!API23@}) update ${PLATFORM23} ${API23};;
     ${!API24@}) update ${PLATFORM24} ${API24};;
     ${!API25@}) update ${PLATFORM25} ${API25};;
     ${!API26@}) update ${PLATFORM26} ${API26};;
-    ${!API27@}) update ${PLATFORM27} ${API27};;
+    ${!API27@}) export LD_LIBRARY_PATH="/usr/lib/i386-linux-gnu/mesa" && update ${PLATFORM27} ${API27};;
     ${!API28@}) update ${PLATFORM28} ${API28};;
     *) 
         echo "UNSUPPORTED API VERSION [${ANDROID_EMULATOR_API_VERSION_FOR_START}]"
@@ -117,6 +119,6 @@ echo "Running emulator for [$ANDROID_EMULATOR_API_VERSION_FOR_START]"
 ${ANDROID_EMU}/emulator \
     -avd ${ANDROID_EMULATOR_API_VERSION_FOR_START} \
     -no-boot-anim -noaudio -no-window -gpu off -verbose \
-    -qemu -vnc :2 -enable-kvm
+    -qemu -vnc $ip:2 -enable-kvm
 
 ${ANDROID_TOOLS}/adb logcat -b all -v color -d
