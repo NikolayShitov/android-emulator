@@ -113,12 +113,28 @@ echo "Create, if no exists, virtual device for [${ANDROID_EMULATOR_API_VERSION_F
 ${ANDOIRD_BIN}/avdmanager -v create avd \
     -n ${ANDROID_EMULATOR_API_VERSION_FOR_START} \
     -k ${!ANDROID_EMULATOR_API_VERSION_FOR_START} \
-    -d "10.1in WXGA (Tablet)"
+    -d "10.1in WXGA (Tablet)" \
+  || echo "avdmanager retcode [$?]"
 
 echo "Running emulator for [$ANDROID_EMULATOR_API_VERSION_FOR_START]"
-${ANDROID_EMU}/emulator \
-    -avd ${ANDROID_EMULATOR_API_VERSION_FOR_START} \
-    -no-boot-anim -noaudio -no-window -gpu off -verbose \
-    -qemu -vnc $ip:2 -enable-kvm
+if [ "${ANDROID_EMULATOR_API_VERSION_FOR_START}" == "API14" ]
+then
+    ${ANDROID_EMU}/emulator \
+        -avd ${ANDROID_EMULATOR_API_VERSION_FOR_START} \
+        -partition-size 1024 \
+        -no-boot-anim -noaudio -no-window -gpu off -verbose \
+        -qemu -vnc :2 &
+else
+    ${ANDROID_EMU}/emulator \
+        -avd ${ANDROID_EMULATOR_API_VERSION_FOR_START} \
+        -partition-size 1024 \
+        -no-boot-anim -noaudio -no-window -gpu auto -verbose \
+        -qemu -vnc :2 -enable-kvm &
+fi
 
-${ANDROID_TOOLS}/adb logcat -b all -v color -d
+echo "Wait device starting"
+${ANDROID_TOOLS}/adb wait-for-device
+
+# for prevent exiting, because we have only background tasks
+# this must run bash, which passed as last arg for docker run command
+exec "$@";

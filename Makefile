@@ -6,7 +6,7 @@ ifneq "$(RUNNED)" ""
 IP := $(shell docker inspect $(ALIAS) | grep "IPAddress\"" | head -n1 | cut -d '"' -f 4)
 endif
 STALE_IMAGES := $(shell docker images | grep "<none>" | awk '{print($$3)}')
-EMULATOR ?= "API28"
+EMULATOR ?= "API19"
 ARCH ?= "x86_64"
 
 COLON := :
@@ -14,7 +14,17 @@ COLON := :
 .PHONY = all run ports kill ps
 
 run: clean
-	@docker run -e "ANDROID_EMULATOR_API_VERSION_FOR_START=$(EMULATOR)" --privileged -P --log-driver=json-file dtdservices/android-emulator
+	@docker run -it -e "ANDROID_EMULATOR_API_VERSION_FOR_START=$(EMULATOR)" --privileged \
+	-p 23:22 \
+	-p 81:80 \
+	-p 443:443 \
+	-p 5037:5037 \
+	-p 5554:5554 \
+	-p 5555:5555 \
+	-p 5902:5902 \
+	-v ~/Android/Sdk:/opt/sdk \
+	--log-driver=json-file dtdservices/android-emulator \
+	/bin/bash
 
 ports:
 ifneq "$(RUNNED)" ""

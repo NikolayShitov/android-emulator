@@ -48,7 +48,8 @@ ENV PLATFORM14 "platforms;android-14"
 ENV API15 "system-images;android-15;google_apis;x86"
 ENV PLATFORM15 "platforms;android-15"
 
-ENV API16 "system-images;android-16;google_apis;x86"
+#ENV API16 "system-images;android-16;google_apis;x86"
+ENV API16 "system-images;android-16;default;x86"
 ENV PLATFORM16 "platforms;android-16"
 
 ENV API17 "system-images;android-17;google_apis;x86"
@@ -57,7 +58,8 @@ ENV PLATFORM17 "platforms;android-17"
 ENV API18 "system-images;android-18;google_apis;x86"
 ENV PLATFORM18 "platforms;android-18"
 
-ENV API19 "system-images;android-19;google_apis;x86"
+#ENV API19 "system-images;android-19;google_apis;x86"
+ENV API19 "system-images;android-19;default;x86"
 ENV PLATFORM19 "platforms;android-19"
 
 ENV API21 "system-images;android-21;google_apis;x86_64"
@@ -87,7 +89,7 @@ ENV PLATFORM28 "platforms;android-28"
 RUN cd ${ANDOIRD_BIN} && yes | ./sdkmanager --licenses
 
 # Install latest android tools and system images
-RUN cd ${ANDOIRD_BIN} && ./sdkmanager \
+RUN ${ANDOIRD_BIN}/sdkmanager \
         "tools" \
         "platform-tools" \
         "emulator"
@@ -112,7 +114,7 @@ ENV NOTVISIBLE "in users profile"
 
 RUN echo "export VISIBLE=now" >> /etc/profile
 
-# Add entrypoint. current wirkdir - opt
+# Add entrypoint. current workdir - opt
 COPY entrypoint.sh entrypoint.sh
 RUN ls /opt
 RUN chmod +x entrypoint.sh
